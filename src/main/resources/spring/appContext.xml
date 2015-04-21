@@ -23,13 +23,13 @@
     <bean id="reporterHtml" class="org.ds.webcrawler.reporter.ReporterHtmlFreeMarkerImpl">
         <constructor-arg name="templatesDirectory" value="${templateLocation}"/>
         <constructor-arg name="templateName" value="${templateFile}"/>
-        <constructor-arg name="reportName" value="${reportName}"/>
+        <constructor-arg name="reportName" value="${reportHTMLName}"/>
     </bean>
 
     <bean id="reporterCsv" class="org.ds.webcrawler.reporter.ReporterCsvImpl">
         <constructor-arg name="recordSeparator" value="${recordSeparator}"/>
         <constructor-arg name="delimiter" value="${delimiter}"/>
-        <constructor-arg name="reportName" value="${reportName}"/>
+        <constructor-arg name="reportName" value="${reportCSVName}"/>
     </bean>
 
     <bean id="crawlerService" class="org.ds.webcrawler.service.CrawlerServiceImpl">

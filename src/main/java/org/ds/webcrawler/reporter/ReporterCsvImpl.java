@@ -36,7 +36,6 @@ public class ReporterCsvImpl implements Reporter {
             fileWriter = new FileWriter(reportName);
             csvPrinter = new CSVPrinter(fileWriter, csvFormat);
             csvPrinter.printRecord(FILE_HEADER);
-
             for(Site site: sites) {
                 List siteDataRecord = new ArrayList();
                 siteDataRecord.add(site.getSiteUrl());
