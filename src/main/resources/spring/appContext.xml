@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+    <context:property-placeholder location="/properties/crawler.properties" order="0" ignore-unresolvable="true"/>
+    <context:property-placeholder location="/properties/freemarker.properties" order="0" ignore-unresolvable="true"/>
+    <context:property-placeholder location="/properties/csv.properties" order="0" ignore-unresolvable="true"/>
+    <context:component-scan base-package="org.ds.webcrawler.reporter" />
+
+    <bean id="htmlParser" class="org.ds.webcrawler.htmlparser.HtmlParserJsoupImpl">
+        <constructor-arg name="alexaTopsitesCountriesUrl" value="${alexaTopsitesCountriesUrl}"/>
+        <constructor-arg name="alexaSiteInfoUrl" value="${alexaSiteInfoUrl}"/>
+    </bean>
+
+    <bean id="reporterFactory" class="org.ds.webcrawler.reporter.ReporterFactory">
+        <property name="reporterHtml" ref="reporterHtml"/>
+        <property name="reporterCsv" ref="reporterCsv"/>
+        <property name="reporterType" value="${defaultReporterType}"/>
+    </bean>
+
+    <bean id="reporterHtml" class="org.ds.webcrawler.reporter.ReporterHtmlFreeMarkerImpl">
+        <constructor-arg name="templatesDirectory" value="${templateLocation}"/>
+        <constructor-arg name="templateName" value="${templateFile}"/>
+        <constructor-arg name="reportName" value="${reportName}"/>
+    </bean>
+
+    <bean id="reporterCsv" class="org.ds.webcrawler.reporter.ReporterCsvImpl">
+        <constructor-arg name="recordSeparator" value="${recordSeparator}"/>
+        <constructor-arg name="delimiter" value="${delimiter}"/>
+        <constructor-arg name="reportName" value="${reportName}"/>
+    </bean>
+
+    <bean id="crawlerService" class="org.ds.webcrawler.service.CrawlerServiceImpl">
+        <constructor-arg name="countOfSites" value="${defaultCountOfSites}"/>
+        <property name="htmlParser" ref="htmlParser"/>
+        <property name="reporterFactory" ref="reporterFactory"/>
+    </bean>
+
+</beans>
